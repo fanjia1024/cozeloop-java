@@ -10,7 +10,7 @@ import com.coze.loop.trace.CozeLoopTracerProvider;
 public class CozeLoopConfig {
     private String workspaceId;
     private String serviceName = "cozeloop-java-app";
-    private String baseUrl = "https://loop.coze.cn";
+    private String baseUrl = "https://api.coze.cn";
     
     private HttpConfig httpConfig;
     private CozeLoopTracerProvider.TraceConfig traceConfig;
@@ -75,21 +75,35 @@ public class CozeLoopConfig {
      * Get span endpoint URL.
      */
     public String getSpanEndpoint() {
-        return baseUrl + "/api/v1/spans";
+        return baseUrl + "/v1/loop/traces/ingest";
     }
     
     /**
      * Get file endpoint URL.
      */
     public String getFileEndpoint() {
-        return baseUrl + "/api/v1/files";
+        return baseUrl + "/v1/loop/files/upload";
     }
     
     /**
-     * Get prompt endpoint URL.
+     * Get prompt endpoint URL for fetching prompts (mget).
      */
     public String getPromptEndpoint() {
-        return baseUrl + "/api/v1/prompts";
+        return baseUrl + "/v1/loop/prompts/mget";
+    }
+    
+    /**
+     * Get prompt execution endpoint URL.
+     */
+    public String getExecutePromptEndpoint() {
+        return baseUrl + "/v1/loop/prompts/execute";
+    }
+    
+    /**
+     * Get streaming prompt execution endpoint URL.
+     */
+    public String getExecuteStreamingPromptEndpoint() {
+        return baseUrl + "/v1/loop/prompts/execute_streaming";
     }
     
     public static Builder builder() {

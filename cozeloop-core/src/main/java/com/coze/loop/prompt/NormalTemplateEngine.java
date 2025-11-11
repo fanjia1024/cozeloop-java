@@ -20,6 +20,11 @@ public class NormalTemplateEngine implements TemplateEngine {
         }
         
         try {
+            // Handle null variables
+            if (variables == null) {
+                variables = new HashMap<>();
+            }
+            
             // Convert all values to strings
             Map<String, String> stringVars = new HashMap<>();
             for (Map.Entry<String, Object> entry : variables.entrySet()) {

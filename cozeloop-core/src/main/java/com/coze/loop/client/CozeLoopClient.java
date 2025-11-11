@@ -1,8 +1,11 @@
 package com.coze.loop.client;
 
+import com.coze.loop.entity.ExecuteParam;
+import com.coze.loop.entity.ExecuteResult;
 import com.coze.loop.entity.Message;
 import com.coze.loop.entity.Prompt;
 import com.coze.loop.prompt.GetPromptParam;
+import com.coze.loop.stream.StreamReader;
 import com.coze.loop.trace.CozeLoopSpan;
 import io.opentelemetry.api.trace.Tracer;
 
@@ -75,6 +78,22 @@ public interface CozeLoopClient extends AutoCloseable {
      * @param param the parameters identifying the prompt
      */
     void invalidatePromptCache(GetPromptParam param);
+    
+    /**
+     * Execute a prompt.
+     *
+     * @param param the execution parameters
+     * @return the execution result
+     */
+    ExecuteResult execute(ExecuteParam param);
+    
+    /**
+     * Execute a prompt with streaming response.
+     *
+     * @param param the execution parameters
+     * @return stream reader for ExecuteResult
+     */
+    StreamReader<ExecuteResult> executeStreaming(ExecuteParam param);
     
     // ========== Client Management ==========
     

@@ -117,14 +117,52 @@ public class HttpClient {
     }
     
     /**
+     * Execute a POST request with JSON body and return Response for streaming.
+     * The caller is responsible for closing the Response.
+     *
+     * @param url the URL
+     * @param body the request body object
+     * @return Response object for streaming
+     * @throws IOException if the request fails
+     */
+    public Response postStream(String url, Object body) throws IOException {
+        String json = JsonUtils.toJson(body);
+        RequestBody requestBody = RequestBody.create(json, JSON_MEDIA_TYPE);
+        
+        Request request = new Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build();
+        
+        Response response = okHttpClient.newCall(request).execute();
+        
+        if (!response.isSuccessful()) {
+            String errorBody = response.body() != null ? response.body().string() : "";
+            response.close();
+            throw new CozeLoopException(ErrorCode.NETWORK_ERROR,
+                String.format("HTTP request failed with code: %d, body: %s",
+                    response.code(), errorBody));
+        }
+        
+        return response;
+    }
+    
+    /**
      * Execute the request.
      */
     private String execute(Request request) {
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
+                String errorBody = response.body() != null ? response.body().string() : "";
                 throw new CozeLoopException(ErrorCode.NETWORK_ERROR,
                     String.format("HTTP request failed with code: %d, body: %s",
-                        response.code(), response.body() != null ? response.body().string() : ""));
+                        response.code(), errorBody));
+            }
+            
+            // Log Content-Type for debugging
+            String contentType = response.header("Content-Type");
+            if (logger.isDebugEnabled() && contentType != null) {
+                logger.debug("Response Content-Type: {}", contentType);
             }
             
             ResponseBody body = response.body();

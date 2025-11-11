@@ -19,9 +19,9 @@ public class CozeLoopProperties {
     private String serviceName;
     
     /**
-     * Base URL (default: https://loop.coze.cn).
+     * Base URL (default: https://api.coze.cn).
      */
-    private String baseUrl = "https://loop.coze.cn";
+    private String baseUrl = "https://api.coze.cn";
     
     /**
      * Authentication configuration.

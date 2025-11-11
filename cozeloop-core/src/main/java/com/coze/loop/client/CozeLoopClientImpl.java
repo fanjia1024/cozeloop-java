@@ -1,5 +1,7 @@
 package com.coze.loop.client;
 
+import com.coze.loop.entity.ExecuteParam;
+import com.coze.loop.entity.ExecuteResult;
 import com.coze.loop.entity.Message;
 import com.coze.loop.entity.Prompt;
 import com.coze.loop.exception.CozeLoopException;
@@ -7,13 +9,13 @@ import com.coze.loop.exception.ErrorCode;
 import com.coze.loop.http.HttpClient;
 import com.coze.loop.prompt.GetPromptParam;
 import com.coze.loop.prompt.PromptProvider;
+import com.coze.loop.stream.StreamReader;
 import com.coze.loop.trace.CozeLoopSpan;
 import com.coze.loop.trace.CozeLoopTracerProvider;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,10 +107,23 @@ public class CozeLoopClientImpl implements CozeLoopClient {
         promptProvider.invalidateCache(param);
     }
     
+    @Override
+    public ExecuteResult execute(ExecuteParam param) {
+        checkNotClosed();
+        return promptProvider.execute(param);
+    }
+    
+    @Override
+    public StreamReader<ExecuteResult> executeStreaming(ExecuteParam param) {
+        checkNotClosed();
+        return promptProvider.executeStreaming(param);
+    }
+    
     // ========== Client Management ==========
     
     @Override
     public String getWorkspaceId() {
+        checkNotClosed();
         return workspaceId;
     }
     

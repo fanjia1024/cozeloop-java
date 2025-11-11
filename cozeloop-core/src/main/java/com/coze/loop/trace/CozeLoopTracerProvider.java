@@ -56,9 +56,23 @@ public class CozeLoopTracerProvider {
             .build();
         
         // Build and register OpenTelemetry SDK
-        this.openTelemetrySdk = OpenTelemetrySdk.builder()
-            .setTracerProvider(sdkTracerProvider)
-            .buildAndRegisterGlobal();
+        // Check if GlobalOpenTelemetry is already set to avoid conflicts in tests
+        OpenTelemetrySdk sdk;
+        try {
+            // Try to get existing instance - if this succeeds, it's already set
+            GlobalOpenTelemetry.get();
+            // Already set, build without registering globally to avoid conflicts
+            sdk = OpenTelemetrySdk.builder()
+                .setTracerProvider(sdkTracerProvider)
+                .build();
+            logger.debug("OpenTelemetry already initialized globally, using non-global instance");
+        } catch (IllegalStateException e) {
+            // Not set yet, register globally (normal case)
+            sdk = OpenTelemetrySdk.builder()
+                .setTracerProvider(sdkTracerProvider)
+                .buildAndRegisterGlobal();
+        }
+        this.openTelemetrySdk = sdk;
         
         logger.info("CozeLoop TracerProvider initialized with service: {}, workspace: {}",
             serviceName, workspaceId);

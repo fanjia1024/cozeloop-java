@@ -19,8 +19,12 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Auto-configuration for CozeLoop Spring Boot integration.
+ * Supports both Spring Boot 2.x and 3.x.
+ * 
+ * For Spring Boot 3.x: Uses AutoConfiguration.imports file
+ * For Spring Boot 2.x: Uses spring.factories file
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(CozeLoopClient.class)
 @EnableConfigurationProperties(CozeLoopProperties.class)
 @ConditionalOnProperty(prefix = "cozeloop", name = "workspace-id")

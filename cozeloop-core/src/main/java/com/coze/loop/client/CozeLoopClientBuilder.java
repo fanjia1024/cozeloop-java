@@ -45,7 +45,7 @@ public class CozeLoopClientBuilder {
     }
     
     /**
-     * Set base URL (optional, default: "https://loop.coze.cn").
+     * Set base URL (optional, default: "https://api.coze.cn").
      *
      * @param baseUrl the base URL
      * @return this builder
@@ -129,6 +129,8 @@ public class CozeLoopClientBuilder {
             PromptProvider promptProvider = new PromptProvider(
                 httpClient,
                 config.getPromptEndpoint(),
+                config.getExecutePromptEndpoint(),
+                config.getExecuteStreamingPromptEndpoint(),
                 config.getWorkspaceId(),
                 config.getPromptCacheConfig()
             );
