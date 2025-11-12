@@ -1,21 +1,22 @@
 # CozeLoop Java SDK
-[English](README.md) | [简体中文](README.zh_CN.md)
+[English](README.md) | 简体中文
 
-Java SDK for interacting with [CozeLoop platform](https://loop.coze.cn).
+## 概述
 
-## Features
+CozeLoop Java SDK 是一个用于与 [扣子罗盘平台](https://loop.coze.cn) 进行交互的 Java 客户端。
 
-- **Trace Reporting**: Built on OpenTelemetry SDK, automatic batch reporting
-- **Prompt Management**: Pull, cache, and format prompts
-- **AOP Annotation**: Declarative tracing with `@CozeTrace` annotation
-- **Spring Boot Integration**: Seamless integration with Spring Boot applications
+主要功能：
+- **Trace 上报**：基于 OpenTelemetry SDK，自动批量上报
+- **Prompt 管理**：拉取、缓存和格式化 prompts
+- **AOP 注解**：使用 `@CozeTrace` 注解进行声明式追踪
+- **Spring Boot 集成**：与 Spring Boot 应用无缝集成
 
-## Requirements
+## 要求
 
-- Java 8+ (Java 11+ recommended)
-- Maven 3.6+ or Gradle 6.0+
+- Java 8+ (推荐 Java 11+)
+- Maven 3.6+ 或 Gradle 6.0+
 
-## Installation
+## 安装
 
 ### Maven
 
@@ -37,14 +38,14 @@ Java SDK for interacting with [CozeLoop platform](https://loop.coze.cn).
 </dependency>
 ```
 
-## Quick Start
+## 快速开始
 
-### Initialize
+### 初始化
 
-First, visit https://loop.coze.cn/console/enterprise/personal/open/oauth/apps and create an OAuth app.
-Then you can get your owner appid, public key and private key.
+首先，访问 https://loop.coze.cn/console/enterprise/personal/open/oauth/apps 并创建一个 OAuth 应用，
+获取应用所有者的 AppID、公钥和私钥。
 
-Set your environment variables:
+设置环境变量：
 ```bash
 export COZELOOP_WORKSPACE_ID=your workspace id
 export COZELOOP_JWT_OAUTH_CLIENT_ID=your client id
@@ -52,13 +53,13 @@ export COZELOOP_JWT_OAUTH_PRIVATE_KEY=your private key
 export COZELOOP_JWT_OAUTH_PUBLIC_KEY_ID=your public key id
 ```
 
-Or use PAT (Personal Access Token) for testing:
+或使用 PAT (Personal Access Token) 进行测试：
 ```bash
 export COZELOOP_WORKSPACE_ID=your workspace id
 export COZELOOP_API_TOKEN=your token
 ```
 
-### Basic Usage
+### 基本用法
 
 ```java
 import com.coze.loop.client.CozeLoopClient;
@@ -71,24 +72,24 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
-// Initialize client
+// 初始化客户端
 String workspaceId = System.getenv("COZELOOP_WORKSPACE_ID");
 String apiToken = System.getenv("COZELOOP_API_TOKEN");
 
 CozeLoopClient client = new CozeLoopClientBuilder()
     .workspaceId(workspaceId)
-    .tokenAuth(apiToken)  // or use .jwtOAuth(clientId, privateKey, publicKeyId)
+    .tokenAuth(apiToken)  // 或使用 .jwtOAuth(clientId, privateKey, publicKeyId)
     .build();
 
 try {
-    // Report trace
+    // 上报 trace
     try (CozeLoopSpan span = client.startSpan("operation", "custom")) {
         span.setInput("Hello");
         span.setOutput("World");
         span.setAttribute("custom_key", "custom_value");
     }
     
-    // Get and format prompt
+    // 获取和格式化 prompt
     Prompt prompt = client.getPrompt(GetPromptParam.builder()
         .promptKey("your_prompt_key")
         .build());
@@ -97,21 +98,21 @@ try {
     variables.put("var1", "content");
     List<Message> messages = client.formatPrompt(prompt, variables);
 } finally {
-    // Close client (important: ensures all traces are reported)
+    // 关闭客户端（重要：确保所有 traces 都被上报）
     client.close();
 }
 ```
 
-### Report Trace with LLM
+### Trace 上报与 LLM 调用
 
 ```java
 try (CozeLoopSpan span = client.startSpan("llmCall", "llm")) {
-    String input = "What is the weather in Shanghai?";
+    String input = "上海天气怎么样？";
     
-    // Call your LLM API here
+    // 调用你的 LLM API
     String output = callLLMAPI(input);
     
-    // Set span attributes
+    // 设置 span 属性
     span.setInput(input);
     span.setOutput(output);
     span.setModelProvider("openai");
@@ -121,7 +122,7 @@ try (CozeLoopSpan span = client.startSpan("llmCall", "llm")) {
 }
 ```
 
-### Spring Boot Integration
+### Spring Boot 集成
 
 **application.yml**
 
@@ -136,12 +137,9 @@ cozeloop:
     enabled: true
 ```
 
-**Use Annotations**
+**使用注解**
 
 ```java
-import com.coze.loop.spring.annotation.CozeTrace;
-import org.springframework.stereotype.Service;
-
 @Service
 public class LLMService {
     
@@ -152,13 +150,9 @@ public class LLMService {
 }
 ```
 
-## Documentation
+你可以在 [这里](examples) 查看更多示例。
 
-- [Examples](examples/README.md)
-- [API Documentation](docs/api.md)
-- [Configuration](docs/configuration.md)
-
-## Building from Source
+## 从源码构建
 
 ```bash
 git clone https://github.com/coze-dev/cozeloop-java.git
@@ -166,18 +160,16 @@ cd cozeloop-java
 mvn clean install
 ```
 
-## Contribution
+## 贡献
 
-Please check [Contributing](CONTRIBUTING.md) for more details.
+如需了解更多详细信息，请查看 [Contributing](CONTRIBUTING.md)。
 
-## Security
+## 安全
 
-If you discover a potential security issue in this project, or think you may
-have discovered a security issue, we ask that you notify Bytedance Security via our [security center](https://security.bytedance.com/src) or [vulnerability reporting email](sec@bytedance.com).
-
-Please do **not** create a public GitHub issue.
+如果你发现本项目中存在潜在的安全问题，或者认为自己可能发现了安全问题，请通过我们的 [安全中心](https://security.bytedance.com/src) 或 [漏洞报告邮箱](sec@bytedance.com) 通知字节跳动安全团队。
+请**不要**创建公开的 GitHub 问题。
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+本项目采用 [MIT License](LICENSE)。
 
