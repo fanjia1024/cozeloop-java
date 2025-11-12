@@ -264,8 +264,8 @@ public class CozeLoopSpanExporter implements SpanExporter {
      * <pre>{@code
      * {
      *   "spans": [
-     *     { /* UploadSpan object */ },
-     *     { /* UploadSpan object */ },
+     *     { ... },
+     *     { ... },
      *     ...
      *   ]
      * }
