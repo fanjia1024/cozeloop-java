@@ -28,7 +28,8 @@ public class ParentChildSpanExample {
     public static void main(String[] args) {
         String workspaceId = System.getenv("COZELOOP_WORKSPACE_ID");
         String apiToken = System.getenv("COZELOOP_API_TOKEN");
-        
+
+
         if (workspaceId == null || apiToken == null) {
             System.err.println("请设置环境变量：");
             System.err.println("  COZELOOP_WORKSPACE_ID=your_workspace_id");
