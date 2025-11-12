@@ -6,7 +6,11 @@
 CozeLoop Java SDK 是一个用于与 [扣子罗盘平台](https://loop.coze.cn) 进行交互的 Java 客户端。
 
 主要功能：
-- **Trace 上报**：基于 OpenTelemetry SDK，自动批量上报
+- **Trace 上报**：基于 [OpenTelemetry](https://opentelemetry.io/) SDK，自动批量上报
+  - 两级批处理：OpenTelemetry BatchSpanProcessor + 自定义 25 个 span 批次
+  - 跨线程和异步操作的自动上下文传播
+  - 支持 Events、Links 和 Baggage
+  - 详见 [OpenTelemetry 集成指南](docs/opentelemetry.md)
 - **Prompt 管理**：拉取、缓存和格式化 prompts
 - **AOP 注解**：使用 `@CozeTrace` 注解进行声明式追踪
 - **Spring Boot 集成**：与 Spring Boot 应用无缝集成
@@ -151,6 +155,31 @@ public class LLMService {
 ```
 
 你可以在 [这里](examples) 查看更多示例。
+
+## 文档
+
+- [示例](examples/README.md) - 演示 SDK 用法的代码示例
+- [OpenTelemetry 集成指南](docs/opentelemetry.md) - OpenTelemetry 集成的详细指南
+  - 架构概述
+  - 两级批处理策略
+  - 上下文传播
+  - 高级功能（Events、Links、Baggage）
+  - 最佳实践
+- [API 文档](docs/api.md) - API 参考
+- [配置](docs/configuration.md) - 配置选项
+
+### OpenTelemetry 优势
+
+SDK 基于 OpenTelemetry 构建，提供：
+
+- **行业标准**：广泛采用的观测性框架
+- **厂商中立**：可与任何支持 OpenTelemetry 的后端配合使用
+- **丰富的生态系统**：广泛的工具库
+- **自动批处理**：内置批处理机制，高效导出
+- **上下文传播**：跨服务的自动追踪上下文传播
+- **成熟且经过验证**：生产就绪，性能优异
+
+更多详情，请参阅 [OpenTelemetry 集成指南](docs/opentelemetry.md)。
 
 ## 从源码构建
 

@@ -5,7 +5,11 @@ Java SDK for interacting with [CozeLoop platform](https://loop.coze.cn).
 
 ## Features
 
-- **Trace Reporting**: Built on OpenTelemetry SDK, automatic batch reporting
+- **Trace Reporting**: Built on [OpenTelemetry](https://opentelemetry.io/) SDK, automatic batch reporting
+  - Two-level batching: OpenTelemetry BatchSpanProcessor + custom 25-span batches
+  - Automatic context propagation across threads and async operations
+  - Support for Events, Links, and Baggage
+  - See [OpenTelemetry Integration Guide](docs/opentelemetry.md) for details
 - **Prompt Management**: Pull, cache, and format prompts
 - **AOP Annotation**: Declarative tracing with `@CozeTrace` annotation
 - **Spring Boot Integration**: Seamless integration with Spring Boot applications
@@ -154,9 +158,28 @@ public class LLMService {
 
 ## Documentation
 
-- [Examples](examples/README.md)
-- [API Documentation](docs/api.md)
-- [Configuration](docs/configuration.md)
+- [Examples](examples/README.md) - Code examples demonstrating SDK usage
+- [OpenTelemetry Integration Guide](docs/opentelemetry.md) - Detailed guide on OpenTelemetry integration
+  - Architecture overview
+  - Two-level batching strategy
+  - Context propagation
+  - Advanced features (Events, Links, Baggage)
+  - Best practices
+- [API Documentation](docs/api.md) - API reference
+- [Configuration](docs/configuration.md) - Configuration options
+
+### OpenTelemetry Benefits
+
+The SDK is built on OpenTelemetry, providing:
+
+- **Industry Standard**: Widely adopted observability framework
+- **Vendor Neutral**: Works with any backend that supports OpenTelemetry
+- **Rich Ecosystem**: Extensive instrumentation libraries
+- **Automatic Batching**: Built-in batch processing for efficient export
+- **Context Propagation**: Automatic trace context propagation across services
+- **Mature & Battle-Tested**: Production-ready with excellent performance
+
+For more details, see the [OpenTelemetry Integration Guide](docs/opentelemetry.md).
 
 ## Building from Source
 
