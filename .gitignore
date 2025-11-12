@@ -79,10 +79,4 @@ bin/
 # Windows
 Thumbs.db
 
-# Project documentation files
-TEST_SUMMARY.md
-QUICK_START.md
-IMPLEMENTATION_PROGRESS.md
-IMPLEMENTATION_COMPLETE.md
-PROJECT_SUMMARY.md
-PROGRESS_REPORT.md
+
